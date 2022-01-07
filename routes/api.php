@@ -14,10 +14,6 @@ use App\Http\Controllers\CustomerController;
 |
 */
 
-/*Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});*/
-
 /** public routes start here */
 Route::prefix('v1')->group(function () {
 
