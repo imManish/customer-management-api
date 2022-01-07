@@ -54,4 +54,55 @@ class LineItemTest extends TestCase
         $this->assertEquals(1.6, $line->taxAmount());
         $this->assertEquals(9.6, $line->totalAmount());
     }
+
+    public function test_line_item_tax_type_exclusive_discount_value()
+    {
+        $inputLine = [
+            'item_id' => 1,
+            'description' => 'desc_1',
+            'unit_price' => 100,
+            'qty' => 1,
+            'discount_type' => 'value',
+            'discount_value' => 5,
+            'tax_percent' => 10
+        ];
+
+        $document = [
+            'tax_type' => 'exclusive'
+        ];
+
+        $line = new LineItem($inputLine, $document);
+        $this->assertEquals(100, $line->subTotal());
+        $this->assertEquals(5, $line->discountAmount());
+        $this->assertEquals(95, $line->netPrice());
+        $this->assertEquals(9.5, $line->taxAmount());
+        $this->assertEquals(104.5, $line->totalAmount());
+    }
+
+    public function test_line_item_tax_type_exclusive()
+    {
+        $inputLine = [
+            'item_id' => 1,
+            'description' => 'desc_1',
+            'unit_price' => 100,
+            'qty' => 1,
+            'discount_type' => 'percent',
+            'discount_value' => 5,
+            'tax_percent' => 10
+        ];
+
+        $document = [
+            'tax_type' => 'exclusive'
+        ];
+
+        $line = new LineItem($inputLine, $document);
+
+        $this->assertEquals(100, $line->subTotal());
+        $this->assertEquals(5, $line->discountAmount());
+        $this->assertEquals(95, $line->netPrice());
+        $this->assertEquals(9.5, $line->taxAmount());
+        $this->assertEquals(104.5, $line->totalAmount());
+    }
+
+
 }

@@ -5,16 +5,25 @@ namespace Tests\Feature\Service;
 class LineItem extends Calculation
 {
     /**
-     * @var input
+     * @var input object
      */
     public $input;
 
     /**
+     * @var document object
+     */
+    public $document = [
+        'tax_type' => 'exclusive'
+    ];
+
+    /**
      * @param $input
      */
-    public function __construct($input)
+    public function __construct($input , $document = array())
     {
         $this->input = (object) $input;
+        $this->document = isset($document) ? (object) $document : (object) $this->document;
+        dd($this->document);
     }
 
     /**
@@ -45,22 +54,29 @@ class LineItem extends Calculation
      * This used to get netPrice or Amount Before Tax
      *
      * @formula Qty x (Unit Price – Discount Amount)
+     * @formula inclusive taxtype Qty x (Unit Price – Discount Amount) / (1+ Tax %))
      * @return void
      */
     public function netPrice()
     {
-        return $this->input->qty * ($this->input->unit_price - $this->discountAmount());
+        return ($this->document->tax_type != 'inclusive') ?
+            $this->input->qty * ($this->input->unit_price - $this->discountAmount()) :
+            $this->input->qty * ($this->input->unit_price - $this->discountAmount()) / (1+ $this->input->tax_percent)/100;
     }
 
     /**
      * This used to get tax amount
      *
      * @formula Qty x ((Unit Price -Discount Amount) x (Tax %))
+     * @formula inclusive taxtype – (Unit Price – Discount Amount / (1+ Tax %))
      * @return mixed|void
      */
     public function taxAmount()
     {
-        return $this->input->qty * (($this->input->unit_price - $this->discountAmount()) * $this->input->tax_percent)/100;
+        return($this->document->tax_type != 'inclusive') ?
+            $this->input->qty * (($this->input->unit_price - $this->discountAmount()) * $this->input->tax_percent)/100 :
+            $this->input->qty * (($this->input->unit_price - $this->discountAmount()) - ($this->input->unit_price -
+                    $this->discountAmount()) / (1+ $this->input->tax_percent)/100) ;
     }
 
     /**
