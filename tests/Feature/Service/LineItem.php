@@ -22,8 +22,7 @@ class LineItem extends Calculation
     public function __construct($input , $document = array())
     {
         $this->input = (object) $input;
-        $this->document = isset($document) ? (object) $document : (object) $this->document;
-        dd($this->document);
+        $this->document = !empty($document) ? (object) $document : (object) $this->document;
     }
 
     /**

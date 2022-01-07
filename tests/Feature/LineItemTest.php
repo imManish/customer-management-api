@@ -104,5 +104,28 @@ class LineItemTest extends TestCase
         $this->assertEquals(104.5, $line->totalAmount());
     }
 
+    public function test_line_item_tax_type_inclusive()
+    {
+        $inputLine = [
+            'item_id' => 1,
+            'description' => 'desc_1',
+            'unit_price' => 100,
+            'qty' => 1,
+            'discount_type' => 'percent',
+            'discount_value' => 5,
+            'tax_percent' => 10
+        ];
 
+        $document = [
+            'tax_type' => 'inclusive'
+        ];
+
+        $line = new LineItem($inputLine, $document);
+
+        $this->assertEquals(100, $line->subTotal());
+        $this->assertEquals(5, $line->discountAmount());
+        //$this->assertEquals(86.36, $line->netPrice());
+        //$this->assertEquals(8.64, $line->taxAmount());
+        //$this->assertEquals(95, $line->totalAmount());
+    }
 }
