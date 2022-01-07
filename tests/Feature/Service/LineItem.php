@@ -52,5 +52,24 @@ class LineItem extends Calculation
         return $this->input->qty * ($this->input->unit_price - $this->discountAmount());
     }
 
+    /**
+     * This used to get tax amount
+     *
+     * @formula Qty x ((Unit Price -Discount Amount) x (Tax %))
+     * @return mixed|void
+     */
+    public function taxAmount()
+    {
+        return $this->input->qty * (($this->input->unit_price - $this->discountAmount()) * $this->input->tax_percent)/100;
+    }
+
+    /**
+     * @formula  Tax amount + Amount before tax
+     * @return mixed|void
+     */
+    public function totalAmount()
+    {
+        return $this->taxAmount() + $this->netPrice();
+    }
 
 }

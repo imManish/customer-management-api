@@ -15,6 +15,21 @@ abstract class Calculation
     abstract public function discountAmount();
 
     /**
+     * @return mixed
+     */
+    abstract public function netPrice();
+
+    /**
+     * @return mixed
+     */
+    abstract public function taxAmount();
+
+    /**
+     * @return mixed
+     */
+    abstract public function totalAmount();
+
+    /**
      * @param $value
      * @return float|int
      */

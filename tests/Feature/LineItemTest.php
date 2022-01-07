@@ -27,8 +27,8 @@ class LineItemTest extends TestCase
         $this->assertEquals(12, $line->subTotal());
         $this->assertEquals(2.4, $line->discountAmount());
         $this->assertEquals(9.6, $line->netPrice());
-        //$this->assertEquals(1.92, $line->taxAmount());
-        //$this->assertEquals(11.52, $line->totalAmount());
+        $this->assertEquals(1.92, $line->taxAmount());
+        $this->assertEquals(11.52, $line->totalAmount());
     }
 
     /**
@@ -51,7 +51,7 @@ class LineItemTest extends TestCase
         $this->assertEquals(10, $line->subTotal());
         $this->assertEquals(2, $line->discountAmount());
         $this->assertEquals(8, $line->netPrice());
-        //$this->assertEquals(1.6, $line->taxAmount());
-        //$this->assertEquals(9.6, $line->totalAmount());
+        $this->assertEquals(1.6, $line->taxAmount());
+        $this->assertEquals(9.6, $line->totalAmount());
     }
 }
