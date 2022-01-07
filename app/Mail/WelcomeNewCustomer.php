@@ -47,7 +47,7 @@ class WelcomeNewCustomer extends Mailable
             ->view('mail.customer.new', [
                 'body' => $this->Message
             ])
-            ->from(env('ADMIN_EMAIL_FROM'))
+            ->from(env('MAIL_FROM_ADDRESS'))
             ->to($this->data->email);
     }
 }
