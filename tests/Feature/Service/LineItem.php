@@ -32,7 +32,7 @@ class LineItem extends Calculation
      */
     public function subTotal(): float
     {
-        return round($this->input->unit_price * $this->input->qty,2);
+        return $this->roundOf($this->input->unit_price * $this->input->qty);
     }
 
     /**
@@ -44,8 +44,8 @@ class LineItem extends Calculation
     public function discountAmount(): float
     {
         return ($this->input->discount_type != 'percent') ?
-            round($this->input->discount_value,2) :
-            round($this->discount($this->input->discount_value) * $this->subTotal(),2);
+            $this->roundOf($this->input->discount_value) :
+            $this->roundOf($this->discount($this->input->discount_value) * $this->subTotal());
     }
 
     /**
@@ -58,9 +58,9 @@ class LineItem extends Calculation
     public function netPrice(): float
     {
         return ($this->document->tax_type != 'inclusive') ?
-            round($this->input->qty * ($this->input->unit_price - $this->discountAmount()) ,2):
-            round($this->input->qty * (($this->input->unit_price - $this->discountAmount()) /
-                    (1 + $this->input->tax_percent / 100)),2);
+            $this->roundOf($this->input->qty * ($this->input->unit_price - $this->discountAmount())):
+            $this->roundOf($this->input->qty * (($this->input->unit_price - $this->discountAmount()) /
+                    (1 + $this->taxPercent($this->input->tax_percent))));
     }
 
     /**
@@ -73,10 +73,11 @@ class LineItem extends Calculation
     public function taxAmount(): float
     {
         return ($this->document->tax_type != 'inclusive') ?
-            round($this->input->qty * (($this->input->unit_price - $this->discountAmount()) *
-                    $this->input->tax_percent)/100 ,2):
-            round($this->input->qty * (($this->input->unit_price - $this->discountAmount()) - (
-                $this->input->unit_price - $this->discountAmount()) / (1 + $this->input->tax_percent/100)), 2);
+            $this->roundOf($this->input->qty * ($this->input->unit_price - $this->discountAmount()) *
+                $this->taxPercent($this->input->tax_percent) ):
+            $this->roundOf($this->input->qty * (($this->input->unit_price - $this->discountAmount()) -
+                    ($this->input->unit_price - $this->discountAmount()) /
+                    (1 + $this->taxPercent($this->input->tax_percent))));
     }
 
     /**
@@ -85,7 +86,6 @@ class LineItem extends Calculation
      */
     public function totalAmount(): float
     {
-        return round($this->taxAmount() + $this->netPrice(), 2);
+        return $this->roundOf($this->taxAmount() + $this->netPrice());
     }
-
 }

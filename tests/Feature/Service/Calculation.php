@@ -33,8 +33,26 @@ abstract class Calculation
      * @param $value
      * @return float|int
      */
-    protected function discount($value)
+    protected function discount($value): float
     {
         return $value / 100;
+    }
+
+    /**
+     * @param $value
+     * @return float|int
+     */
+    protected function taxPercent($value): float
+    {
+        return $value / 100;
+    }
+
+    /**
+     * @param $value
+     * @return float
+     */
+    protected function roundOf($value): float
+    {
+        return round($value,2);
     }
 }
