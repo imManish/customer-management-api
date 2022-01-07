@@ -121,11 +121,10 @@ class LineItemTest extends TestCase
         ];
 
         $line = new LineItem($inputLine, $document);
-
         $this->assertEquals(100, $line->subTotal());
         $this->assertEquals(5, $line->discountAmount());
-        //$this->assertEquals(86.36, $line->netPrice());
-        //$this->assertEquals(8.64, $line->taxAmount());
-        //$this->assertEquals(95, $line->totalAmount());
+        $this->assertEquals(86.36, $line->netPrice());
+        $this->assertEquals(8.64, $line->taxAmount());
+        $this->assertEquals(95, $line->totalAmount());
     }
 }

@@ -33,7 +33,7 @@ class LineItem extends Calculation
      */
     public function subTotal()
     {
-        return $this->input->unit_price * $this->input->qty;
+        return round($this->input->unit_price * $this->input->qty,2);
     }
 
     /**
@@ -45,8 +45,8 @@ class LineItem extends Calculation
     public function discountAmount()
     {
         return ($this->input->discount_type != 'percent') ?
-            $this->input->discount_value :
-            $this->discount($this->input->discount_value) * $this->subTotal();
+            round($this->input->discount_value,2) :
+            round($this->discount($this->input->discount_value) * $this->subTotal(),2);
     }
 
     /**
@@ -59,8 +59,8 @@ class LineItem extends Calculation
     public function netPrice()
     {
         return ($this->document->tax_type != 'inclusive') ?
-            $this->input->qty * ($this->input->unit_price - $this->discountAmount()) :
-            $this->input->qty * ($this->input->unit_price - $this->discountAmount()) / (1+ $this->input->tax_percent)/100;
+            round($this->input->qty * ($this->input->unit_price - $this->discountAmount()) ,2):
+            round($this->input->qty * (($this->input->unit_price - $this->discountAmount()) / (1 + $this->input->tax_percent / 100)),2);
     }
 
     /**
@@ -72,10 +72,10 @@ class LineItem extends Calculation
      */
     public function taxAmount()
     {
-        return($this->document->tax_type != 'inclusive') ?
-            $this->input->qty * (($this->input->unit_price - $this->discountAmount()) * $this->input->tax_percent)/100 :
-            $this->input->qty * (($this->input->unit_price - $this->discountAmount()) - ($this->input->unit_price -
-                    $this->discountAmount()) / (1+ $this->input->tax_percent)/100) ;
+        return ($this->document->tax_type != 'inclusive') ?
+            round($this->input->qty * (($this->input->unit_price - $this->discountAmount()) * $this->input->tax_percent)/100 ,2):
+            round($this->input->qty * (($this->input->unit_price - $this->discountAmount()) - ($this->input->unit_price -
+                    $this->discountAmount()) / (1 + $this->input->tax_percent/100)), 2) ;
     }
 
     /**
@@ -84,7 +84,7 @@ class LineItem extends Calculation
      */
     public function totalAmount()
     {
-        return $this->taxAmount() + $this->netPrice();
+        return round($this->taxAmount() + $this->netPrice(), 2);
     }
 
 }
