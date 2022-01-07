@@ -30,4 +30,28 @@ class LineItemTest extends TestCase
         //$this->assertEquals(1.92, $line->taxAmount());
         //$this->assertEquals(11.52, $line->totalAmount());
     }
+
+    /**
+     * @return void
+     */
+    public function test_line_item_default_2()
+    {
+        $inputLine = [
+            'item_id' => 1,
+            'description' => 'desc_1',
+            'unit_price' => 10,
+            'qty' => 1,
+            'discount_type' => 'percent',
+            'discount_value' => 20,
+            'tax_percent' => 20
+        ];
+
+        $line = new LineItem($inputLine);
+
+        $this->assertEquals(10, $line->subTotal());
+        $this->assertEquals(2, $line->discountAmount());
+        $this->assertEquals(8, $line->netPrice());
+        //$this->assertEquals(1.6, $line->taxAmount());
+        //$this->assertEquals(9.6, $line->totalAmount());
+    }
 }
